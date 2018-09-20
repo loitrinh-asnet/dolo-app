@@ -1,0 +1,28 @@
+version: '3.1'
+
+volumes:
+  postgres_data: {}
+  postgres_backup: {}
+
+services:
+  dolo:
+    image: loitrinh/django:0.1.0
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+    environment:
+      - POSTGRES_USER=dolo_app
+      - POSTGRES_HOST=postgres
+    ports:
+      - "8000:8000"
+    command: /start.sh
+
+  postgres:
+    image: loitrinh/postgres:0.1.0
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_backup:/backups
+    environment:
+      - POSTGRES_USER=dolo_app
+      - POSTGRES_HOST=postgres
